@@ -20,6 +20,12 @@ class OrderService(
             throw IllegalArgumentException("$id already in use")
         }
 
+        val alreadyBuy = orderRepository.existsBuyHistory(userId, id)
+
+        if (alreadyBuy) {
+            throw IllegalArgumentException("$userId is already buy")
+        }
+
         orderRepository.order(id, userId)
 
         orderLockRedisRepository.unlock(id)
